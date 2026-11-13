@@ -1,0 +1,727 @@
+/* ============================================================
+   TERA Electronics – Layout Component Styles
+   Covers: Navbar, Footer, and global Layout wrapper
+   Brand colors:
+     --primary: #0F172A   (dark navy)
+     --accent:  #3B82F6   (blue)
+     --amber:   #F59E0B   (amber)
+     --success: #10B981   (green)
+     --bg:      #F8FAFC
+     --white:   #FFFFFF
+   ============================================================ */
+
+/* ---- CSS Variables ---- */
+:root {
+  --tera-primary: #0F172A;
+  --tera-accent: #3B82F6;
+  --tera-amber: #F59E0B;
+  --tera-success: #10B981;
+  --tera-bg: #F8FAFC;
+  --tera-white: #FFFFFF;
+  --tera-gray-100: #F1F5F9;
+  --tera-gray-200: #E2E8F0;
+  --tera-gray-400: #94A3B8;
+  --tera-gray-600: #475569;
+  --tera-gray-700: #334155;
+  --tera-shadow-sm: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+  --tera-shadow-md: 0 4px 16px rgba(0,0,0,.12);
+  --tera-radius: 8px;
+  --tera-transition: 0.2s ease;
+}
+
+/* ============================================================
+   LAYOUT WRAPPER
+   ============================================================ */
+.tera-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--tera-bg);
+}
+
+.tera-layout__main {
+  flex: 1;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+.tera-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--tera-white);
+  transition: box-shadow var(--tera-transition);
+}
+
+.tera-navbar--scrolled {
+  box-shadow: var(--tera-shadow-md);
+}
+
+/* -- Announcement Bar -- */
+.tera-announcement {
+  background: var(--tera-primary);
+  color: rgba(255, 255, 255, 0.88);
+  text-align: center;
+  font-size: 0.775rem;
+  padding: 6px 16px;
+  letter-spacing: 0.015em;
+  font-weight: 500;
+}
+
+.tera-announcement strong {
+  font-weight: 700;
+  color: #FCD34D;
+  padding: 1px 4px;
+  border-radius: 3px;
+}
+
+/* -- Main Nav Row -- */
+.tera-nav-main {
+  background: var(--tera-white);
+  border-bottom: 1px solid var(--tera-gray-200);
+}
+
+.tera-nav-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Main nav inner is flex */
+.tera-nav-main .tera-nav-container {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  height: 60px;
+}
+
+/* -- Logo -- */
+.tera-logo {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.tera-logo__icon {
+  color: var(--tera-accent);
+  stroke-width: 2.5;
+}
+
+.tera-logo__text {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--tera-primary);
+  letter-spacing: -0.5px;
+}
+
+.tera-logo--footer .tera-logo__text {
+  color: var(--tera-white);
+}
+
+.tera-logo--footer .tera-logo__icon {
+  color: var(--tera-amber);
+}
+
+/* -- Logo Image (PNG) -- */
+.tera-logo-link {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+  /* Reset any inherited border/outline/shadow */
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+  padding: 0;
+}
+
+.tera-logo-link:focus-visible {
+  outline: 2px solid var(--tera-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+.tera-logo-img {
+  height: 36px;
+  width: auto;
+  object-fit: contain;
+  display: block;
+  /* Ensure NO border around the image itself */
+  border: none;
+  outline: none;
+  box-shadow: none;
+  background: transparent;
+  /* Slight opacity on rest, full on hover for polish */
+  opacity: 0.95;
+  transition: opacity 0.2s ease;
+}
+
+.tera-logo-link:hover .tera-logo-img {
+  opacity: 1;
+}
+
+/* Footer variant — logo is blue on transparent, visible on dark navy */
+.tera-logo-link--footer .tera-logo-img,
+.tera-logo-img--footer {
+  height: 40px;
+  filter: brightness(1.08);
+}
+
+@media (max-width: 768px) {
+  .tera-logo-img {
+    height: 28px;
+  }
+  .tera-logo-img--footer {
+    height: 32px;
+  }
+}
+
+/* -- Search Bar -- */
+.tera-search {
+  flex: 1;
+  display: flex;
+  align-items: stretch;
+  border: 1.5px solid var(--tera-gray-200);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: border-color var(--tera-transition), box-shadow var(--tera-transition);
+  max-width: 600px;
+}
+
+.tera-search:focus-within {
+  border-color: var(--tera-accent);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12);
+}
+
+.tera-search__input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 9px 14px;
+  font-size: 0.875rem;
+  color: var(--tera-primary);
+  background: var(--tera-white);
+}
+
+.tera-search__input::placeholder {
+  color: var(--tera-gray-400);
+}
+
+.tera-search__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 18px;
+  background: var(--tera-accent);
+  color: var(--tera-white);
+  border: none;
+  cursor: pointer;
+  transition: background var(--tera-transition);
+  font-size: 0.85rem;
+  font-weight: 600;
+  gap: 6px;
+}
+
+.tera-search__btn:hover {
+  background: #1D4ED8;
+}
+
+/* -- Action Icons -- */
+.tera-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.tera-action-btn {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: var(--tera-radius);
+  color: var(--tera-gray-700);
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background var(--tera-transition), color var(--tera-transition);
+}
+
+.tera-action-btn:hover {
+  background: var(--tera-gray-100);
+  color: var(--tera-accent);
+}
+
+.tera-action-btn:hover::after {
+  content: attr(aria-label);
+  position: absolute;
+  bottom: -32px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--tera-primary);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.9;
+}
+
+/* Badge */
+.tera-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 4px;
+  background: var(--tera-accent);
+  color: var(--tera-white);
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+}
+
+/* Hamburger – hidden on desktop */
+.tera-hamburger {
+  display: none;
+}
+
+/* -- Category Nav -- */
+.tera-category-nav {
+  background: var(--tera-primary);
+  border-bottom: 2px solid rgba(59, 130, 246, 0.25);
+}
+
+.tera-category-nav__inner {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 0;
+}
+
+.tera-category-nav__inner::-webkit-scrollbar {
+  display: none;
+}
+
+.tera-category-nav__link {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 11px 16px;
+  color: rgba(255, 255, 255, 0.78);
+  text-decoration: none;
+  font-size: 0.82rem;
+  font-weight: 500;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+  letter-spacing: 0.01em;
+  transition: color var(--tera-transition), border-color var(--tera-transition), background var(--tera-transition);
+  position: relative;
+  margin-bottom: -2px;
+}
+
+.tera-category-nav__link:hover {
+  color: var(--tera-white);
+  border-bottom-color: #60A5FA;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.tera-category-nav__link--active {
+  color: var(--tera-white);
+  border-bottom-color: #60A5FA;
+}
+
+.tera-category-nav__link--all {
+  margin-left: auto;
+  color: #FCD34D;
+  font-weight: 600;
+  border-left: 1px solid rgba(255, 255, 255, 0.12);
+  padding-left: 18px;
+}
+
+.tera-category-nav__link--all:hover {
+  color: #FDE68A;
+  border-bottom-color: #FCD34D;
+  background: rgba(252, 211, 77, 0.06);
+}
+
+/* -- Mobile Menu -- */
+.tera-mobile-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: var(--tera-white);
+  box-shadow: var(--tera-shadow-md);
+  z-index: 999;
+  padding: 16px;
+  border-top: 2px solid var(--tera-accent);
+}
+
+.tera-mobile-search {
+  display: flex;
+  border: 1px solid var(--tera-gray-200);
+  border-radius: var(--tera-radius);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.tera-mobile-search input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px 14px;
+  font-size: 0.9rem;
+}
+
+.tera-mobile-search button {
+  padding: 0 14px;
+  background: var(--tera-accent);
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.tera-mobile-links {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.tera-mobile-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  color: var(--tera-gray-700);
+  text-decoration: none;
+  border-radius: var(--tera-radius);
+  font-size: 0.95rem;
+  transition: background var(--tera-transition);
+}
+
+.tera-mobile-link:hover {
+  background: var(--tera-gray-100);
+  color: var(--tera-accent);
+}
+
+.tera-mobile-divider {
+  border: none;
+  border-top: 1px solid var(--tera-gray-200);
+  margin: 8px 0;
+}
+
+.tera-badge-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  background: var(--tera-accent);
+  color: white;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.tera-footer {
+  background: var(--tera-primary);
+  color: rgba(255,255,255,0.75);
+  margin-top: auto;
+}
+
+.tera-footer__container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* -- Newsletter Strip -- */
+.tera-footer__newsletter {
+  background: linear-gradient(135deg, #1E3A5F, #1D4ED8);
+  padding: 36px 0;
+}
+
+.tera-newsletter__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+}
+
+.tera-newsletter__text h3 {
+  color: var(--tera-white);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.tera-newsletter__text p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.75);
+}
+
+.tera-newsletter__form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tera-newsletter__form input {
+  padding: 10px 16px;
+  border-radius: var(--tera-radius);
+  border: none;
+  font-size: 0.9rem;
+  min-width: 240px;
+  outline: none;
+  color: var(--tera-primary);
+}
+
+.tera-newsletter__form button {
+  padding: 10px 22px;
+  background: var(--tera-amber);
+  color: var(--tera-primary);
+  font-weight: 700;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: var(--tera-radius);
+  cursor: pointer;
+  transition: opacity var(--tera-transition);
+  white-space: nowrap;
+}
+
+.tera-newsletter__form button:hover {
+  opacity: 0.9;
+}
+
+.tera-newsletter__success {
+  color: var(--tera-white);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+/* -- Footer Body Grid -- */
+.tera-footer__body {
+  padding: 48px 0 32px;
+}
+
+.tera-footer__grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 40px;
+}
+
+/* -- Brand Column -- */
+.tera-footer__tagline {
+  color: var(--tera-amber);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 8px 0 10px;
+}
+
+.tera-footer__desc {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,0.6);
+  margin: 0 0 20px;
+}
+
+.tera-footer__social {
+  display: flex;
+  gap: 10px;
+}
+
+.tera-social-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--tera-radius);
+  background: rgba(255,255,255,0.08);
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  transition: background var(--tera-transition), color var(--tera-transition);
+}
+
+.tera-social-btn:hover {
+  background: var(--tera-accent);
+  color: var(--tera-white);
+}
+
+/* -- Link Columns -- */
+.tera-footer__col-heading {
+  color: var(--tera-white);
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin: 0 0 16px;
+}
+
+.tera-footer__col-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.tera-footer__link {
+  color: rgba(255,255,255,0.6);
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: color var(--tera-transition);
+}
+
+.tera-footer__link:hover {
+  color: var(--tera-white);
+}
+
+/* Contact column with icons */
+.tera-footer__contact-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: rgba(255,255,255,0.6);
+  font-size: 0.875rem;
+}
+
+.tera-footer__contact-list li svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+  color: var(--tera-accent);
+}
+
+/* -- Copyright Bar -- */
+.tera-footer__bottom {
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 20px 0;
+}
+
+.tera-footer__bottom-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tera-footer__copyright {
+  margin: 0;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.45);
+}
+
+.tera-footer__payments {
+  display: flex;
+  gap: 8px;
+}
+
+.tera-payment-badge {
+  padding: 3px 10px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.03em;
+}
+
+.tera-footer__legal {
+  display: flex;
+  gap: 16px;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 1024px) {
+  .tera-footer__grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .tera-footer__brand {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .tera-search {
+    display: none;
+  }
+
+  .tera-hamburger {
+    display: flex;
+  }
+
+  .tera-footer__grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 28px;
+  }
+
+  .tera-footer__brand {
+    grid-column: span 2;
+  }
+
+  .tera-footer__bottom-inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .tera-newsletter__content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .tera-newsletter__form {
+    width: 100%;
+  }
+
+  .tera-newsletter__form input {
+    min-width: unset;
+    flex: 1;
+  }
+}
+
+@media (max-width: 480px) {
+  .tera-footer__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tera-footer__brand {
+    grid-column: span 1;
+  }
+
+  .tera-announcement {
+    font-size: 0.72rem;
+  }
+}

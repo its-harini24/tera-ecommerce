@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F8FAFC" />
+      <stop offset="100%" stop-color="#F1F5F9" />
+    </linearGradient>
+    <linearGradient id="chipGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1E293B" />
+      <stop offset="100%" stop-color="#0F172A" />
+    </linearGradient>
+    <linearGradient id="cyanAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00E5FF" />
+      <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#bgGrad)" rx="12" />
+  <rect x="1" y="1" width="398" height="298" fill="none" stroke="#E2E8F0" stroke-width="2" rx="11" />
+
+  <!-- Subtle Circuit Traces -->
+  <g stroke="#CBD5E1" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" opacity="0.6">
+    <path d="M 60 70 L 120 70 L 150 100" />
+    <circle cx="60" cy="70" r="3" fill="#94A3B8" />
+    <path d="M 50 150 L 130 150" />
+    <circle cx="50" cy="150" r="3" fill="#94A3B8" />
+    <path d="M 70 230 L 120 230 L 150 200" />
+    <circle cx="70" cy="230" r="3" fill="#94A3B8" />
+
+    <path d="M 340 70 L 280 70 L 250 100" />
+    <circle cx="340" cy="70" r="3" fill="#94A3B8" />
+    <path d="M 350 150 L 270 150" />
+    <circle cx="350" cy="150" r="3" fill="#94A3B8" />
+    <path d="M 330 230 L 280 230 L 250 200" />
+    <circle cx="330" cy="230" r="3" fill="#94A3B8" />
+  </g>
+
+  <!-- Central Microchip Icon -->
+  <g transform="translate(150, 100)">
+    <!-- Pins Top & Bottom -->
+    <g fill="#94A3B8">
+      <!-- Top Pins -->
+      <rect x="15" y="-10" width="8" height="12" rx="2" />
+      <rect x="35" y="-10" width="8" height="12" rx="2" />
+      <rect x="55" y="-10" width="8" height="12" rx="2" />
+      <rect x="75" y="-10" width="8" height="12" rx="2" />
+      <!-- Bottom Pins -->
+      <rect x="15" y="98" width="8" height="12" rx="2" />
+      <rect x="35" y="98" width="8" height="12" rx="2" />
+      <rect x="55" y="98" width="8" height="12" rx="2" />
+      <rect x="75" y="98" width="8" height="12" rx="2" />
+      <!-- Left Pins -->
+      <rect x="-10" y="15" width="12" height="8" rx="2" />
+      <rect x="-10" y="35" width="12" height="8" rx="2" />
+      <rect x="-10" y="55" width="12" height="8" rx="2" />
+      <rect x="-10" y="75" width="12" height="8" rx="2" />
+      <!-- Right Pins -->
+      <rect x="98" y="15" width="12" height="8" rx="2" />
+      <rect x="98" y="35" width="12" height="8" rx="2" />
+      <rect x="98" y="55" width="12" height="8" rx="2" />
+      <rect x="98" y="75" width="12" height="8" rx="2" />
+    </g>
+
+    <!-- Chip Body -->
+    <rect x="0" y="0" width="100" height="100" rx="8" fill="url(#chipGrad)" stroke="#334155" stroke-width="2" />
+
+    <!-- Pin 1 Dot -->
+    <circle cx="15" cy="15" r="4" fill="#00E5FF" />
+
+    <!-- TERA Emblem / Circuit Core -->
+    <path d="M 35 40 L 65 40 L 50 65 Z" fill="url(#cyanAccent)" opacity="0.9" />
+    <circle cx="50" cy="50" r="18" fill="none" stroke="#3B82F6" stroke-width="2" stroke-dasharray="4 3" />
+  </g>
+
+  <!-- Label -->
+  <text x="200" y="240" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="13" font-weight="600" fill="#64748B" text-anchor="middle" letter-spacing="0.05em">
+    TERA COMPONENT
+  </text>
+  <text x="200" y="258" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="11" fill="#94A3B8" text-anchor="middle">
+    Electronic Hardware
+  </text>
+</svg>
+
