@@ -31,6 +31,8 @@ export default function ProductDetailPage() {
   const [activeTab, setActiveTab] = useState('specs');
   const [selectedImg, setSelectedImg] = useState(0);
   const [isCopied, setIsCopied] = useState(false);
+  const [mediaSelection, setMediaSelection] = useState({ productId: null, view: 'photo' });
+  const [failedModel, setFailedModel] = useState({ productId: null, path: null });
 
   const product = getProductById(id);
 
@@ -94,6 +96,9 @@ export default function ProductDetailPage() {
   const images = (product.images && product.images.length > 0)
     ? product.images
     : [image || '/placeholder-product.svg'];
+  const activeMedia = mediaSelection.productId === product.id ? mediaSelection.view : 'photo';
+  const modelFailed = failedModel.productId === product.id && failedModel.path === product.model3d;
+  const hasModel = Boolean(product.model3d) && !modelFailed;
 
   return (
     <div className="product-detail-page">
@@ -107,19 +112,59 @@ export default function ProductDetailPage() {
         />
 
         <div className="product-detail-layout">
-          {/* Left Column: Image Gallery */}
+          {/* Left Column: Product Media */}
           <div className="product-gallery">
+            {hasModel && (
+              <div className="product-media-toggle" role="group" aria-label="Product media">
+                <button
+                  type="button"
+                  className={`product-media-toggle-btn ${activeMedia === 'photo' ? 'active' : ''}`}
+                  aria-pressed={activeMedia === 'photo'}
+                  onClick={() => setMediaSelection({ productId: product.id, view: 'photo' })}
+                >
+                  Photos
+                </button>
+                <button
+                  type="button"
+                  className={`product-media-toggle-btn ${activeMedia === 'model' ? 'active' : ''}`}
+                  aria-pressed={activeMedia === 'model'}
+                  onClick={() => setMediaSelection({ productId: product.id, view: 'model' })}
+                >
+                  3D &amp; AR
+                </button>
+              </div>
+            )}
             <div className="product-main-image-wrap">
-              <img
-                src={images[selectedImg] || image || '/placeholder-product.svg'}
-                alt={name}
-                className="product-main-image"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = '/placeholder-product.svg';
-                }}
-              />
+              {activeMedia === 'model' && hasModel ? (
+                <model-viewer
+                  src={product.model3d}
+                  alt={`3D model of ${name}`}
+                  poster={image || images[0]}
+                  camera-controls
+                  auto-rotate
+                  ar
+                  ar-modes="webxr scene-viewer quick-look"
+                  className="product-model-viewer"
+                  onError={() => {
+                    setFailedModel({ productId: product.id, path: product.model3d });
+                    setMediaSelection({ productId: product.id, view: 'photo' });
+                  }}
+                />
+              ) : (
+                <img
+                  src={images[selectedImg] || image || '/placeholder-product.svg'}
+                  alt={name}
+                  className="product-main-image"
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/placeholder-product.svg';
+                  }}
+                />
+              )}
               {badge && <span className="product-detail-badge">{badge}</span>}
+              {activeMedia === 'model' && (
+                <span className="product-model-label">Illustrative model - not to scale</span>
+              )}
             </div>
             <div className="product-thumbnails">
               {images.map((img, idx) => (
@@ -127,7 +172,10 @@ export default function ProductDetailPage() {
                   key={idx}
                   type="button"
                   className={`product-thumb-btn ${selectedImg === idx ? 'active' : ''}`}
-                  onClick={() => setSelectedImg(idx)}
+                  onClick={() => {
+                    setSelectedImg(idx);
+                    setMediaSelection({ productId: product.id, view: 'photo' });
+                  }}
                 >
                   <img
                     src={img || '/placeholder-product.svg'}
