@@ -10,6 +10,7 @@ import {
   ChevronDown,
 } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
 import teraLogo from '../../assets/tera-logo.png';
 import './index.css';
 
@@ -27,6 +28,7 @@ const CATEGORIES = [
 export default function Navbar() {
   const navigate = useNavigate();
   const { cart, wishlist } = useCart();
+  const { user } = useAuth();
   const [searchQuery, setSearchQuery] = useState('');
   const [mobileOpen, setMobileOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -97,8 +99,28 @@ export default function Navbar() {
                 <span className="tera-badge">{cartCount > 99 ? '99+' : cartCount}</span>
               )}
             </Link>
-            <Link to="/account" className="tera-action-btn" aria-label="Account">
+            <Link
+              to="/account"
+              className="tera-action-btn"
+              aria-label={user ? `Account (${user.name})` : 'Account'}
+            >
               <User size={22} />
+              {user && (
+                <span
+                  className="tera-badge"
+                  style={{
+                    width: '8px',
+                    height: '8px',
+                    padding: 0,
+                    minWidth: 'unset',
+                    background: '#10B981',
+                    borderRadius: '50%',
+                    top: '6px',
+                    right: '6px',
+                  }}
+                  title={`Logged in as ${user.name}`}
+                />
+              )}
             </Link>
             <button
               className="tera-action-btn tera-hamburger"
@@ -165,7 +187,7 @@ export default function Navbar() {
               Cart {cartCount > 0 && <span className="tera-badge-inline">{cartCount}</span>}
             </Link>
             <Link to="/account" className="tera-mobile-link" onClick={() => setMobileOpen(false)}>
-              Account
+              {user ? `Account (${user.name})` : 'Sign In / Account'}
             </Link>
           </div>
         </div>

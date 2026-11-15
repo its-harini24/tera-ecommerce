@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
+import { useAuth } from '../context/AuthContext';
 import Breadcrumb from '../components/common/Breadcrumb';
 import Button from '../components/common/Button';
 import './pages.css';
@@ -14,18 +15,19 @@ import './pages.css';
 export default function CheckoutPage() {
   const { cart, cartTotal, cartDispatch } = useCart();
   const { showToast } = useToast();
+  const { user } = useAuth();
   const navigate = useNavigate();
 
   const [step, setStep] = useState(1);
-  const [shippingData, setShippingData] = useState({
-    fullName: '',
-    email: '',
-    phone: '',
-    address: '',
-    city: '',
-    state: '',
-    pincode: '',
-  });
+  const [shippingData, setShippingData] = useState(() => ({
+    fullName: user?.name || 'Kavin',
+    email: user?.email || 'kavin@example.com',
+    phone: user?.phone || '+91 98765 43210',
+    address: user?.address?.addressLine ? `${user.address.addressLine}, ${user.address.area}` : 'Flat 4B, Kaveri Tech Enclave, 2nd Main Road, Anna Nagar West',
+    city: user?.city || 'Chennai',
+    state: user?.state || 'Tamil Nadu',
+    pincode: user?.address?.pincode || '600040',
+  }));
 
   const [paymentMethod, setPaymentMethod] = useState('upi');
   const [upiId, setUpiId] = useState('');
