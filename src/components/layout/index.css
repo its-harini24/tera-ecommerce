@@ -302,6 +302,28 @@
   display: none;
 }
 
+/* Nav Avatar */
+.tera-nav-avatar {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1.5px solid #38BDF8;
+  background: #0F172A;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15);
+  flex-shrink: 0;
+}
+
+.tera-nav-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* -- Category Nav -- */
 .tera-category-nav {
   background: var(--tera-primary);
@@ -404,6 +426,59 @@
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.tera-mobile-user-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+  border-radius: var(--tera-radius);
+  color: #FFFFFF;
+  text-decoration: none;
+  margin-bottom: 12px;
+  border: 1px solid rgba(56, 189, 248, 0.25);
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+}
+
+.tera-mobile-user-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid #38BDF8;
+  flex-shrink: 0;
+  background: #0F172A;
+}
+
+.tera-mobile-user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.tera-mobile-user-text {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-align: left;
+}
+
+.tera-mobile-user-text strong {
+  font-size: 0.95rem;
+  color: #FFFFFF;
+  line-height: 1.2;
+}
+
+.tera-mobile-user-text span {
+  font-size: 0.78rem;
+  color: #94A3B8;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 2px;
 }
 
 .tera-mobile-link {
@@ -585,6 +660,28 @@
   margin: 0 0 16px;
 }
 
+.tera-footer__accordion-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0 0 16px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  cursor: default;
+  pointer-events: none;
+}
+
+.tera-footer__chevron {
+  display: none;
+}
+
+.tera-footer__accordion-content {
+  display: block !important;
+}
+
 .tera-footer__col-list {
   list-style: none;
   padding: 0;
@@ -682,46 +779,217 @@
     display: flex;
   }
 
-  .tera-footer__grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 28px;
-  }
-
-  .tera-footer__brand {
-    grid-column: span 2;
-  }
-
-  .tera-footer__bottom-inner {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+  /* Newsletter compact on mobile */
+  .tera-footer__newsletter {
+    padding: 20px 0;
   }
 
   .tera-newsletter__content {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .tera-newsletter__text h3 {
+    font-size: 1.05rem;
+    margin-bottom: 4px;
+  }
+
+  .tera-newsletter__text p {
+    font-size: 0.8rem;
+    line-height: 1.4;
   }
 
   .tera-newsletter__form {
+    display: flex;
+    gap: 8px;
     width: 100%;
   }
 
   .tera-newsletter__form input {
-    min-width: unset;
+    min-width: 0;
     flex: 1;
+    padding: 8px 12px;
+    font-size: 0.82rem;
   }
-}
 
-@media (max-width: 480px) {
+  .tera-newsletter__form button {
+    padding: 8px 16px;
+    font-size: 0.82rem;
+    white-space: nowrap;
+  }
+
+  /* Footer body & compact brand section */
+  .tera-footer__body {
+    padding: 20px 0 16px;
+  }
+
   .tera-footer__grid {
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
   }
 
   .tera-footer__brand {
-    grid-column: span 1;
+    grid-column: unset;
+    margin-bottom: 14px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .tera-logo-img--footer {
+    height: 28px;
+  }
+
+  .tera-footer__tagline {
+    font-size: 0.75rem;
+    margin: 4px 0 4px;
+  }
+
+  .tera-footer__desc {
+    font-size: 0.8rem;
+    line-height: 1.45;
+    margin: 0 0 12px;
+    color: rgba(255, 255, 255, 0.65);
+    max-width: 340px;
+  }
+
+  .tera-footer__social {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .tera-social-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+  }
+
+  .tera-social-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Mobile Collapsible Accordions */
+  .tera-footer__col--accordion {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    width: 100%;
+  }
+
+  .tera-footer__accordion-btn {
+    pointer-events: auto;
+    cursor: pointer;
+    padding: 12px 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    color: var(--tera-white);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    transition: color 0.15s ease;
+  }
+
+  .tera-footer__accordion-btn:hover {
+    color: var(--tera-accent);
+  }
+
+  .tera-footer__chevron {
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.5);
+    transition: transform 0.2s ease, color 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .tera-footer__col--accordion.is-open .tera-footer__chevron {
+    transform: rotate(180deg);
+    color: var(--tera-white);
+  }
+
+  .tera-footer__accordion-content {
+    display: none !important;
+    padding: 2px 0 12px 4px;
+  }
+
+  .tera-footer__col--accordion.is-open .tera-footer__accordion-content {
+    display: block !important;
+    animation: teraFadeIn 0.2s ease;
+  }
+
+  .tera-footer__col-list {
+    gap: 6px;
+  }
+
+  .tera-footer__link {
+    font-size: 0.82rem;
+    padding: 3px 0;
+    display: inline-block;
+  }
+
+  .tera-footer__contact-list {
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.1);
+    gap: 6px;
+  }
+
+  .tera-footer__contact-list li {
+    font-size: 0.8rem;
+    gap: 8px;
+  }
+
+  /* Compact Copyright & Bottom Bar */
+  .tera-footer__bottom {
+    padding: 14px 0 18px;
+  }
+
+  .tera-footer__bottom-inner {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .tera-footer__copyright {
+    font-size: 0.75rem;
+    margin: 0;
+  }
+
+  .tera-footer__payments {
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .tera-payment-badge {
+    font-size: 0.68rem;
+    padding: 2px 7px;
+  }
+
+  .tera-footer__legal {
+    gap: 12px;
+  }
+
+  .tera-footer__legal .tera-footer__link {
+    font-size: 0.75rem;
   }
 
   .tera-announcement {
     font-size: 0.72rem;
+  }
+}
+
+@keyframes teraFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

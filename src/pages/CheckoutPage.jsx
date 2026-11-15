@@ -13,7 +13,17 @@ import Button from '../components/common/Button';
 import './pages.css';
 
 export default function CheckoutPage() {
-  const { cart, cartTotal, cartDispatch } = useCart();
+  const {
+    cart,
+    cartTotal,
+    cartDispatch,
+    appliedCoupon,
+    discountAmount,
+    shippingFee,
+    taxAmount,
+    grandTotal,
+    removeCoupon,
+  } = useCart();
   const { showToast } = useToast();
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -40,10 +50,6 @@ export default function CheckoutPage() {
 
   const [orderNumber, setOrderNumber] = useState('');
 
-  const shippingCost = cartTotal >= 999 ? 0 : 99;
-  const tax = cartTotal * 0.18;
-  const grandTotal = cartTotal + shippingCost + tax;
-
   const handleShippingSubmit = (e) => {
     e.preventDefault();
     if (!shippingData.fullName || !shippingData.email || !shippingData.phone || !shippingData.address) {
@@ -58,6 +64,7 @@ export default function CheckoutPage() {
     const generatedOrder = 'TERA-' + Math.floor(100000 + Math.random() * 900000);
     setOrderNumber(generatedOrder);
     cartDispatch({ type: 'CLEAR_CART' });
+    removeCoupon();
     setStep(3);
     showToast('Order placed successfully!', 'success');
   };
@@ -78,7 +85,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="checkout-page">
-      <div className="container" style={{ padding: '24px 20px' }}>
+      <div className="container checkout-container">
         <Breadcrumb
           items={[
             { label: 'Cart', href: '/cart' },
@@ -92,12 +99,12 @@ export default function CheckoutPage() {
             <span className="step-num">1</span>
             <span className="step-label">Shipping Details</span>
           </div>
-          <div className="step-connector" />
+          <div className={`step-connector ${step >= 2 ? 'active' : ''}`} />
           <div className={`step-node ${step >= 2 ? 'active' : ''}`}>
             <span className="step-num">2</span>
             <span className="step-label">Payment Method</span>
           </div>
-          <div className="step-connector" />
+          <div className={`step-connector ${step === 3 ? 'active' : ''}`} />
           <div className={`step-node ${step === 3 ? 'active' : ''}`}>
             <span className="step-num">3</span>
             <span className="step-label">Order Confirmation</span>
@@ -180,8 +187,8 @@ export default function CheckoutPage() {
                   />
                 </div>
               </div>
-              <div className="form-actions">
-                <Button type="submit" variant="primary">
+              <div className="checkout-form-actions">
+                <Button type="submit" variant="primary" className="btn-submit-step">
                   Proceed to Payment <ArrowRight size={16} />
                 </Button>
               </div>
@@ -199,8 +206,14 @@ export default function CheckoutPage() {
               </div>
               <div className="summary-totals">
                 <div className="row"><span>Subtotal</span><span>₹{cartTotal.toFixed(2)}</span></div>
-                <div className="row"><span>Shipping</span><span>{shippingCost === 0 ? 'FREE' : `₹${shippingCost}`}</span></div>
-                <div className="row"><span>GST (18%)</span><span>₹{tax.toFixed(2)}</span></div>
+                {discountAmount > 0 && (
+                  <div className="row discount" style={{ color: '#16A34A', fontWeight: 600 }}>
+                    <span>Coupon ({appliedCoupon})</span>
+                    <span>−₹{discountAmount.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="row"><span>Shipping</span><span>{shippingFee === 0 ? 'FREE' : `₹${shippingFee.toFixed(2)}`}</span></div>
+                <div className="row"><span>GST (18%)</span><span>₹{taxAmount.toFixed(2)}</span></div>
                 <div className="row total"><span>Total</span><span>₹{grandTotal.toFixed(2)}</span></div>
               </div>
             </aside>
@@ -261,7 +274,7 @@ export default function CheckoutPage() {
                       value={cardData.cardNumber}
                       onChange={(e) => setCardData({ ...cardData, cardNumber: e.target.value })}
                     />
-                    <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                    <div className="payment-card-inline-inputs">
                       <input
                         type="text"
                         placeholder="MM/YY"
@@ -294,11 +307,11 @@ export default function CheckoutPage() {
                 </label>
               </div>
 
-              <div className="form-actions" style={{ display: 'flex', justifyContent: 'space-between', marginTop: '24px' }}>
-                <Button variant="outline" onClick={() => setStep(1)}>
+              <div className="checkout-form-actions">
+                <Button variant="outline" onClick={() => setStep(1)} className="btn-back-step">
                   <ArrowLeft size={16} /> Back to Address
                 </Button>
-                <Button type="submit" variant="primary">
+                <Button type="submit" variant="primary" className="btn-submit-step">
                   Pay ₹{grandTotal.toFixed(2)} &amp; Place Order
                 </Button>
               </div>
@@ -313,6 +326,15 @@ export default function CheckoutPage() {
                 Phone: {shippingData.phone}
               </p>
               <div className="summary-totals" style={{ marginTop: '20px' }}>
+                <div className="row"><span>Subtotal</span><span>₹{cartTotal.toFixed(2)}</span></div>
+                {discountAmount > 0 && (
+                  <div className="row discount" style={{ color: '#16A34A', fontWeight: 600 }}>
+                    <span>Coupon ({appliedCoupon})</span>
+                    <span>−₹{discountAmount.toFixed(2)}</span>
+                  </div>
+                )}
+                <div className="row"><span>Shipping</span><span>{shippingFee === 0 ? 'FREE' : `₹${shippingFee.toFixed(2)}`}</span></div>
+                <div className="row"><span>GST (18%)</span><span>₹{taxAmount.toFixed(2)}</span></div>
                 <div className="row total"><span>Total Payable</span><span>₹{grandTotal.toFixed(2)}</span></div>
               </div>
             </aside>

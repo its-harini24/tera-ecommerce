@@ -136,9 +136,10 @@ export default function ProductCard({ product }) {
           className="product-card__cart-btn"
           onClick={handleAddToCart}
           disabled={!inStock}
+          aria-label={!inStock ? `${name} is out of stock` : `Add ${name} to cart`}
         >
           <ShoppingCart size={14} />
-          <span>{addedToCart ? 'Added' : 'Add to Cart'}</span>
+          <span>{!inStock ? 'Out of Stock' : (addedToCart ? 'Added' : 'Add to Cart')}</span>
         </Button>
       </div>
     </div>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Mail, Lock, User, Eye, EyeOff, AlertCircle, ArrowRight, Check } from 'lucide-react';
+import { Mail, Lock, User, Eye, EyeOff, AlertCircle, ArrowRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import teraLogo from '../assets/tera-logo.png';
@@ -101,7 +101,7 @@ export default function SignUpPage() {
       showToast('Google sign-up successful! Welcome.', 'success');
       navigate('/account', { replace: true });
     } catch (err) {
-      setFormError('Google sign-up could not be completed.');
+      setFormError(err?.message || 'Google sign-up could not be completed.');
       showToast('Google sign-up error', 'error');
     } finally {
       setGoogleLoading(false);
@@ -246,19 +246,16 @@ export default function SignUpPage() {
             {password && (
               <div className="password-strength">
                 <div
-                  className={`password-strength__bar ${
-                    strength.level >= 1 ? `password-strength__bar--active-${strength.class}` : ''
-                  }`}
+                  className={`password-strength__bar ${strength.level >= 1 ? `password-strength__bar--active-${strength.class}` : ''
+                    }`}
                 />
                 <div
-                  className={`password-strength__bar ${
-                    strength.level >= 2 ? `password-strength__bar--active-${strength.class}` : ''
-                  }`}
+                  className={`password-strength__bar ${strength.level >= 2 ? `password-strength__bar--active-${strength.class}` : ''
+                    }`}
                 />
                 <div
-                  className={`password-strength__bar ${
-                    strength.level >= 3 ? `password-strength__bar--active-${strength.class}` : ''
-                  }`}
+                  className={`password-strength__bar ${strength.level >= 3 ? `password-strength__bar--active-${strength.class}` : ''
+                    }`}
                 />
                 <span className="password-strength__text" style={{ color: strength.level === 3 ? '#10B981' : strength.level === 2 ? '#F59E0B' : '#EF4444' }}>
                   {strength.label}

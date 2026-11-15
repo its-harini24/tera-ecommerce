@@ -328,16 +328,16 @@ export default function HeroElectronicsVisual() {
           {/* Left Pin Row (19 pins) */}
           {[...Array(19)].map((_, i) => (
             <g key={`l-pin-${i}`}>
-              <rect x="14" y="55 + i * 16" width="11" height="9" rx="1.5" fill="#D4AF37" stroke="#9A7B1C" strokeWidth="0.5" />
-              <rect x="25" y="56 + i * 16" width="8" height="7" rx="1" fill="#0B0C0E" />
+              <rect x="14" y={55 + i * 16} width="11" height="9" rx="1.5" fill="#D4AF37" stroke="#9A7B1C" strokeWidth="0.5" />
+              <rect x="25" y={56 + i * 16} width="8" height="7" rx="1" fill="#0B0C0E" />
             </g>
           ))}
 
           {/* Right Pin Row (19 pins) */}
           {[...Array(19)].map((_, i) => (
             <g key={`r-pin-${i}`}>
-              <rect x="225" y="55 + i * 16" width="11" height="9" rx="1.5" fill="#D4AF37" stroke="#9A7B1C" strokeWidth="0.5" />
-              <rect x="217" y="56 + i * 16" width="8" height="7" rx="1" fill="#0B0C0E" />
+              <rect x="225" y={55 + i * 16} width="11" height="9" rx="1.5" fill="#D4AF37" stroke="#9A7B1C" strokeWidth="0.5" />
+              <rect x="217" y={56 + i * 16} width="8" height="7" rx="1" fill="#0B0C0E" />
             </g>
           ))}
 

@@ -8,7 +8,7 @@ import './Products.css';
 
 export default function SearchPage() {
   const [searchParams] = useSearchParams();
-  const query = searchParams.get('q') || '';
+  const query = searchParams.get('q') || searchParams.get('search') || '';
 
   const filteredProducts = products.filter((product) => {
     if (!query.trim()) return true;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Mail, Phone, MapPin } from 'lucide-react';
+import { Mail, Phone, MapPin, ChevronDown } from 'lucide-react';
 import teraLogo from '../../assets/tera-logo.png';
 import './index.css';
 
@@ -32,26 +32,56 @@ const InstagramIcon = ({ size = 18 }) => (
   </svg>
 );
 
-const FOOTER_LINKS = {
-  About: [
-    { label: 'About TERA', to: '/about' },
-    { label: 'Careers', to: '/careers' },
-    { label: 'Blog', to: '/blog' },
-    { label: 'Press', to: '/press' },
-  ],
-  Shop: [
-    { label: 'All Products', to: '/products' },
-    { label: 'Microcontrollers', to: '/products?category=Microcontrollers' },
-    { label: 'Sensors', to: '/products?category=Sensors' },
-    { label: 'Kits', to: '/products?category=Kits' },
-  ],
-  Support: [
-    { label: 'Help Center', to: '/help' },
-    { label: 'Shipping', to: '/shipping' },
-    { label: 'Returns', to: '/returns' },
-    { label: 'Track Order', to: '/track' },
-  ],
-};
+// 4 main footer sections: Quick Links, Customer Support, Categories, About TERA
+const FOOTER_SECTIONS = [
+  {
+    id: 'quick-links',
+    title: 'Quick Links',
+    links: [
+      { label: 'All Products', to: '/products' },
+      { label: 'Featured Kits', to: '/products?category=Kits' },
+      { label: 'Bestsellers', to: '/products' },
+      { label: 'Track Order', to: '/track' },
+      { label: 'Returns & Refunds', to: '/returns' },
+    ],
+  },
+  {
+    id: 'support',
+    title: 'Customer Support',
+    links: [
+      { label: 'Help Center', to: '/help' },
+      { label: 'Shipping Info', to: '/shipping' },
+      { label: 'Returns & Exchanges', to: '/returns' },
+      { label: 'Order Tracking', to: '/track' },
+    ],
+    contact: {
+      email: 'hello@tera.in',
+      phone: '+91 98765 43210',
+      location: 'Bangalore, India',
+    },
+  },
+  {
+    id: 'categories',
+    title: 'Categories',
+    links: [
+      { label: 'Microcontrollers', to: '/products?category=Microcontrollers' },
+      { label: 'Sensors', to: '/products?category=Sensors' },
+      { label: 'Modules', to: '/products?category=Modules' },
+      { label: 'Displays', to: '/products?category=Displays' },
+      { label: 'DIY Kits', to: '/products?category=Kits' },
+    ],
+  },
+  {
+    id: 'about',
+    title: 'About TERA',
+    links: [
+      { label: 'About TERA', to: '/about' },
+      { label: 'Careers', to: '/careers' },
+      { label: 'Blog', to: '/blog' },
+      { label: 'Press & Media', to: '/press' },
+    ],
+  },
+];
 
 const SOCIAL = [
   { icon: GithubIcon, label: 'GitHub', href: 'https://github.com' },
@@ -63,6 +93,14 @@ const SOCIAL = [
 export default function Footer() {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [openSections, setOpenSections] = useState({});
+
+  const toggleSection = (id) => {
+    setOpenSections((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   const handleNewsletter = (e) => {
     e.preventDefault();
@@ -74,13 +112,13 @@ export default function Footer() {
 
   return (
     <footer className="tera-footer">
-      {/* Newsletter */}
+      {/* Newsletter Strip */}
       <div className="tera-footer__newsletter">
         <div className="tera-footer__container">
           <div className="tera-newsletter__content">
             <div className="tera-newsletter__text">
               <h3>Stay in the loop</h3>
-              <p>Get the latest products, project ideas & exclusive deals delivered to your inbox.</p>
+              <p>Get the latest products, project ideas &amp; exclusive deals delivered to your inbox.</p>
             </div>
             {subscribed ? (
               <div className="tera-newsletter__success">
@@ -113,7 +151,7 @@ export default function Footer() {
             </Link>
             <p className="tera-footer__tagline">Your electronics partner</p>
             <p className="tera-footer__desc">
-              Empowering makers, engineers & students with quality components and unbeatable service.
+              Empowering makers, engineers &amp; students with quality components and unbeatable service.
             </p>
             <div className="tera-footer__social">
               {SOCIAL.map(({ icon: Icon, label, href }) => (
@@ -125,44 +163,69 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <Icon size={18} />
+                  <Icon size={16} />
                 </a>
               ))}
             </div>
           </div>
 
-          {/* Link Columns */}
-          {Object.entries(FOOTER_LINKS).map(([heading, links]) => (
-            <div key={heading} className="tera-footer__col">
-              <h4 className="tera-footer__col-heading">{heading}</h4>
-              <ul className="tera-footer__col-list">
-                {links.map(({ label, to }) => (
-                  <li key={label}>
-                    <Link to={to} className="tera-footer__link">{label}</Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Accordion / Column Links */}
+          {FOOTER_SECTIONS.map((section) => {
+            const isOpen = Boolean(openSections[section.id]);
+            return (
+              <div
+                key={section.id}
+                className={`tera-footer__col tera-footer__col--accordion ${isOpen ? 'is-open' : ''}`}
+              >
+                <button
+                  type="button"
+                  className="tera-footer__col-heading tera-footer__accordion-btn"
+                  onClick={() => toggleSection(section.id)}
+                  aria-expanded={isOpen}
+                  aria-controls={`footer-section-${section.id}`}
+                >
+                  <span>{section.title}</span>
+                  <ChevronDown className="tera-footer__chevron" size={16} />
+                </button>
 
-          {/* Contact Column */}
-          <div className="tera-footer__col">
-            <h4 className="tera-footer__col-heading">Contact</h4>
-            <ul className="tera-footer__col-list tera-footer__contact-list">
-              <li>
-                <Mail size={15} />
-                <a href="mailto:hello@tera.in" className="tera-footer__link">hello@tera.in</a>
-              </li>
-              <li>
-                <Phone size={15} />
-                <a href="tel:+919876543210" className="tera-footer__link">+91 98765 43210</a>
-              </li>
-              <li>
-                <MapPin size={15} />
-                <span>Bangalore, India</span>
-              </li>
-            </ul>
-          </div>
+                <div
+                  id={`footer-section-${section.id}`}
+                  className="tera-footer__accordion-content"
+                >
+                  <ul className="tera-footer__col-list">
+                    {section.links.map(({ label, to }) => (
+                      <li key={label}>
+                        <Link to={to} className="tera-footer__link">
+                          {label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+
+                  {section.contact && (
+                    <ul className="tera-footer__col-list tera-footer__contact-list">
+                      <li>
+                        <Mail size={14} />
+                        <a href={`mailto:${section.contact.email}`} className="tera-footer__link">
+                          {section.contact.email}
+                        </a>
+                      </li>
+                      <li>
+                        <Phone size={14} />
+                        <a href="tel:+919876543210" className="tera-footer__link">
+                          {section.contact.phone}
+                        </a>
+                      </li>
+                      <li>
+                        <MapPin size={14} />
+                        <span>{section.contact.location}</span>
+                      </li>
+                    </ul>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
 

@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { CartWishlistProvider } from './context/CartContext';
-import { ToastProvider } from './context/ToastContext';
-import { AuthProvider } from './context/AuthContext';
+import { CartWishlistProvider } from './context/CartWishlistProvider';
+import { ToastProvider } from './context/ToastProvider';
+import { AuthProvider } from './context/AuthProvider';
 import Layout from './components/layout/Layout';
 import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';

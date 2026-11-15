@@ -24,8 +24,15 @@ export default function ProductsPage() {
   const [inStockOnly, setInStockOnly] = useState(false);
 
   const categoryParam = searchParams.get('category') || '';
-  const qParam = searchParams.get('q') || '';
+  const qParam = searchParams.get('q') || searchParams.get('search') || '';
   const [localSearch, setLocalSearch] = useState(qParam);
+  const [prevQParam, setPrevQParam] = useState(qParam);
+
+  // Synchronize local search input when URL query changes (render-phase state adjustment per React guidelines)
+  if (prevQParam !== qParam) {
+    setPrevQParam(qParam);
+    setLocalSearch(qParam);
+  }
 
   const handleCategoryChange = (catId) => {
     const params = new URLSearchParams(searchParams);
@@ -42,8 +49,10 @@ export default function ProductsPage() {
     const params = new URLSearchParams(searchParams);
     if (localSearch.trim()) {
       params.set('q', localSearch.trim());
+      params.delete('search');
     } else {
       params.delete('q');
+      params.delete('search');
     }
     setSearchParams(params);
   };
@@ -67,9 +76,10 @@ export default function ProductsPage() {
   const filteredProducts = useMemo(() => {
     let result = [...products];
 
-    // Category filter
+    // Category filter (case-insensitive for both category ID and category name)
     if (categoryParam) {
-      result = result.filter(p => p.category === categoryParam);
+      const catLower = categoryParam.toLowerCase();
+      result = result.filter(p => p.category.toLowerCase() === catLower);
     }
 
     // Search filter
@@ -123,7 +133,10 @@ export default function ProductsPage() {
     return result;
   }, [categoryParam, qParam, priceMin, priceMax, ratingFilters, inStockOnly, sortBy]);
 
-  const activeCategoryName = categories.find(c => c.id === categoryParam)?.name;
+  const activeCategory = categories.find(
+    c => c.id.toLowerCase() === categoryParam.toLowerCase() || c.name.toLowerCase() === categoryParam.toLowerCase()
+  );
+  const activeCategoryName = activeCategory ? activeCategory.name : (categoryParam || null);
   const hasActiveFilters = categoryParam || qParam || priceMin || priceMax || ratingFilters.length > 0 || inStockOnly;
 
   return (
@@ -173,6 +186,7 @@ export default function ProductsPage() {
                     setLocalSearch('');
                     const params = new URLSearchParams(searchParams);
                     params.delete('q');
+                    params.delete('search');
                     setSearchParams(params);
                   }}
                   aria-label="Clear search"
@@ -212,17 +226,49 @@ export default function ProductsPage() {
           </div>
         </div>
 
+        {/* Mobile Quick Category Scroll Bar */}
+        <div className="mobile-categories-scroll" role="navigation" aria-label="Quick Category Filter">
+          <button
+            type="button"
+            className={`mobile-cat-pill ${!categoryParam ? 'active' : ''}`}
+            onClick={() => handleCategoryChange('')}
+          >
+            All Components
+          </button>
+          {categories.map((cat) => (
+            <button
+              key={cat.id}
+              type="button"
+              className={`mobile-cat-pill ${categoryParam.toLowerCase() === cat.id.toLowerCase() ? 'active' : ''}`}
+              onClick={() => handleCategoryChange(cat.id)}
+            >
+              <span className="mobile-cat-icon">{cat.icon}</span>
+              <span>{cat.name}</span>
+            </button>
+          ))}
+        </div>
+
         {/* Layout with Sidebar + Product Grid */}
         <div className="products-layout">
           {/* Sidebar */}
           <aside className={`products-sidebar ${sidebarOpen ? 'sidebar-open' : ''}`}>
             <div className="sidebar-header">
               <span className="sidebar-title">Filters</span>
-              {hasActiveFilters && (
-                <button className="clear-filters-btn" onClick={clearAllFilters}>
-                  Clear All
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                {hasActiveFilters && (
+                  <button className="clear-filters-btn" onClick={clearAllFilters}>
+                    Clear All
+                  </button>
+                )}
+                <button
+                  type="button"
+                  className="sidebar-close-btn"
+                  onClick={() => setSidebarOpen(false)}
+                  aria-label="Close filters"
+                >
+                  <X size={18} />
                 </button>
-              )}
+              </div>
             </div>
 
             {/* Category Filter */}
@@ -313,6 +359,18 @@ export default function ProductsPage() {
                   className="stock-toggle-checkbox"
                 />
               </label>
+            </div>
+
+            {/* Mobile Sidebar Footer */}
+            <div className="sidebar-mobile-footer">
+              <button
+                type="button"
+                className="btn btn--primary btn--block"
+                style={{ width: '100%', padding: '10px 16px', fontSize: '13px', fontWeight: 600 }}
+                onClick={() => setSidebarOpen(false)}
+              >
+                Apply Filters ({filteredProducts.length} items)
+              </button>
             </div>
           </aside>
 

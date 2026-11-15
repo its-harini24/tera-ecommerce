@@ -230,10 +230,10 @@ function FeaturedKits() {
 
 // ─── Trust Badges ────────────────────────────────────────────────────────────
 const trustBadges = [
-  { icon: Package, label: '10,000+ Products', desc: 'Massive catalog of components' },
+  { icon: Package, label: '10,000+ Products', desc: 'Massive component catalogue' },
   { icon: Truck, label: 'Fast Delivery', desc: 'Ships within 24 hours' },
-  { icon: Headphones, label: 'Expert Support', desc: '7-day technical helpdesk' },
-  { icon: RotateCcw, label: 'Easy Returns', desc: '30-day hassle-free returns' },
+  { icon: Headphones, label: 'Expert Support', desc: 'Technical assistance' },
+  { icon: RotateCcw, label: 'Easy Returns', desc: '30-day returns' },
 ];
 
 function TrustBadges() {
@@ -244,10 +244,12 @@ function TrustBadges() {
           {trustBadges.map(({ icon: Icon, label, desc }) => (
             <div key={label} className="trust-card">
               <div className="trust-icon-wrap">
-                <Icon size={28} className="trust-icon" />
+                <Icon size={24} className="trust-icon" />
               </div>
-              <h4 className="trust-label">{label}</h4>
-              <p className="trust-desc">{desc}</p>
+              <div className="trust-text">
+                <h4 className="trust-label">{label}</h4>
+                <p className="trust-desc">{desc}</p>
+              </div>
             </div>
           ))}
         </div>

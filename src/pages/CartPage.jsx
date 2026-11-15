@@ -17,12 +17,6 @@ import { useCart } from '../context/CartContext';
 import { useToast } from '../context/ToastContext';
 import './CartPage.css';
 
-const COUPONS = {
-  TERA10: 0.10,
-  SAVE20: 0.20,
-  NEWUSER: 0.15,
-};
-
 const QUICK_CATEGORIES = [
   { label: 'Microcontrollers', path: '/products?category=microcontrollers' },
   { label: 'Sensors', path: '/products?category=sensors' },
@@ -32,21 +26,25 @@ const QUICK_CATEGORIES = [
 ];
 
 export default function CartPage() {
-  const { cart, cartTotal, cartDispatch } = useCart();
+  const {
+    cart,
+    cartTotal,
+    cartDispatch,
+    appliedCoupon,
+    discountRate,
+    discountAmount,
+    shippingFee,
+    taxAmount,
+    grandTotal,
+    applyCoupon: applyCouponCtx,
+    removeCoupon: removeCouponCtx,
+  } = useCart();
   const { showToast } = useToast();
   const navigate = useNavigate();
-  const [coupon, setCoupon] = useState('');
-  const [appliedCoupon, setAppliedCoupon] = useState(null);
+  const [couponInput, setCouponInput] = useState('');
   const [couponError, setCouponError] = useState('');
 
   const FREE_SHIPPING_THRESHOLD = 999;
-  const SHIPPING_COST = 99;
-
-  const shipping = cartTotal >= FREE_SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
-  const discount = appliedCoupon ? cartTotal * COUPONS[appliedCoupon] : 0;
-  const taxableAmount = Math.max(0, cartTotal - discount);
-  const tax = taxableAmount * 0.18;
-  const total = taxableAmount + shipping + tax;
   const shippingProgress = Math.min((cartTotal / FREE_SHIPPING_THRESHOLD) * 100, 100);
   const amountToFreeShipping = Math.max(0, FREE_SHIPPING_THRESHOLD - cartTotal);
 
@@ -63,28 +61,27 @@ export default function CartPage() {
 
   const clearCart = () => {
     cartDispatch({ type: 'CLEAR_CART' });
+    removeCouponCtx();
     if (showToast) {
       showToast('Cart cleared', 'info');
     }
   };
 
-  const applyCoupon = () => {
-    const code = coupon.trim().toUpperCase();
-    if (COUPONS[code]) {
-      setAppliedCoupon(code);
+  const handleApplyCoupon = () => {
+    const res = applyCouponCtx(couponInput);
+    if (res.success) {
       setCouponError('');
       if (showToast) {
-        showToast(`Coupon ${code} applied successfully!`, 'success');
+        showToast(`Coupon ${res.code} applied successfully!`, 'success');
       }
     } else {
-      setCouponError('Invalid coupon code. Try TERA10 or SAVE20');
-      setAppliedCoupon(null);
+      setCouponError(res.error);
     }
   };
 
-  const removeCoupon = () => {
-    setAppliedCoupon(null);
-    setCoupon('');
+  const handleRemoveCoupon = () => {
+    removeCouponCtx();
+    setCouponInput('');
     setCouponError('');
     if (showToast) {
       showToast('Coupon removed', 'info');
@@ -288,23 +285,23 @@ export default function CartPage() {
                 <span>₹{cartTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
 
-              {appliedCoupon && (
+              {discountAmount > 0 && (
                 <div className="summary-line-item discount-line">
                   <span>Coupon Discount ({appliedCoupon})</span>
-                  <span>-₹{discount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                  <span>-₹{discountAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                 </div>
               )}
 
               <div className="summary-line-item">
                 <span>Estimated Shipping</span>
-                <span className={shipping === 0 ? 'free-badge-text' : ''}>
-                  {shipping === 0 ? 'FREE' : `₹${shipping.toFixed(2)}`}
+                <span className={shippingFee === 0 ? 'free-badge-text' : ''}>
+                  {shippingFee === 0 ? 'FREE' : `₹${shippingFee.toFixed(2)}`}
                 </span>
               </div>
 
               <div className="summary-line-item">
                 <span>GST Tax (18%)</span>
-                <span>₹{tax.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                <span>₹{taxAmount.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
               </div>
 
               <div className="summary-separator" />
@@ -312,7 +309,7 @@ export default function CartPage() {
               <div className="summary-total-line">
                 <span>Total Amount</span>
                 <span className="summary-total-amount">
-                  ₹{total.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                  ₹{grandTotal.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </span>
               </div>
             </div>
@@ -324,13 +321,13 @@ export default function CartPage() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <Tag size={14} />
                     <span>
-                      <strong>{appliedCoupon}</strong> Applied ({(COUPONS[appliedCoupon] * 100).toFixed(0)}% OFF)
+                      <strong>{appliedCoupon}</strong> Applied ({(discountRate * 100).toFixed(0)}% OFF)
                     </span>
                   </div>
                   <button
                     type="button"
                     className="btn-remove-coupon"
-                    onClick={removeCoupon}
+                    onClick={handleRemoveCoupon}
                     title="Remove coupon"
                     aria-label="Remove coupon"
                   >
@@ -344,12 +341,12 @@ export default function CartPage() {
                       type="text"
                       className="coupon-input-field"
                       placeholder="Coupon Code"
-                      value={coupon}
-                      onChange={(e) => setCoupon(e.target.value)}
-                      onKeyDown={(e) => e.key === 'Enter' && applyCoupon()}
+                      value={couponInput}
+                      onChange={(e) => setCouponInput(e.target.value)}
+                      onKeyDown={(e) => e.key === 'Enter' && handleApplyCoupon()}
                       aria-label="Enter promo coupon code"
                     />
-                    <button type="button" className="btn-apply-coupon" onClick={applyCoupon}>
+                    <button type="button" className="btn-apply-coupon" onClick={handleApplyCoupon}>
                       Apply
                     </button>
                   </div>

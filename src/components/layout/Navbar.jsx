@@ -101,10 +101,23 @@ export default function Navbar() {
             </Link>
             <Link
               to="/account"
-              className="tera-action-btn"
+              className={`tera-action-btn ${user ? 'tera-action-btn--user' : ''}`}
               aria-label={user ? `Account (${user.name})` : 'Account'}
             >
-              <User size={22} />
+              {user ? (
+                <span className="tera-nav-avatar">
+                  <img
+                    src={user.avatar || '/avatar-male.svg'}
+                    alt={user.name || 'Account'}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/avatar-male.svg';
+                    }}
+                  />
+                </span>
+              ) : (
+                <User size={22} />
+              )}
               {user && (
                 <span
                   className="tera-badge"
@@ -115,8 +128,8 @@ export default function Navbar() {
                     minWidth: 'unset',
                     background: '#10B981',
                     borderRadius: '50%',
-                    top: '6px',
-                    right: '6px',
+                    top: '4px',
+                    right: '4px',
                   }}
                   title={`Logged in as ${user.name}`}
                 />
@@ -169,6 +182,28 @@ export default function Navbar() {
             </button>
           </form>
           <div className="tera-mobile-links">
+            {user && (
+              <Link
+                to="/account"
+                className="tera-mobile-user-card"
+                onClick={() => setMobileOpen(false)}
+              >
+                <div className="tera-mobile-user-avatar">
+                  <img
+                    src={user.avatar || '/avatar-male.svg'}
+                    alt={user.name}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/avatar-male.svg';
+                    }}
+                  />
+                </div>
+                <div className="tera-mobile-user-text">
+                  <strong>{user.name}</strong>
+                  <span>{user.email || 'kavin@example.com'}</span>
+                </div>
+              </Link>
+            )}
             {CATEGORIES.map((cat) => (
               <Link
                 key={cat}
@@ -187,7 +222,7 @@ export default function Navbar() {
               Cart {cartCount > 0 && <span className="tera-badge-inline">{cartCount}</span>}
             </Link>
             <Link to="/account" className="tera-mobile-link" onClick={() => setMobileOpen(false)}>
-              {user ? `Account (${user.name})` : 'Sign In / Account'}
+              {user ? `Profile & Orders (${user.name})` : 'Sign In / Register'}
             </Link>
           </div>
         </div>

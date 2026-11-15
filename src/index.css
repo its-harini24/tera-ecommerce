@@ -117,5 +117,16 @@ ol {
   }
 }
 
+@media (max-width: 640px) {
+  .container {
+    padding: 0 12px;
+  }
+
+  /* Prevent horizontal overflow globally on mobile */
+  body {
+    overflow-x: hidden;
+  }
+}
+
 /* Inter font from Google Fonts via CSS import would go in index.html */
 /* Using system fonts as fallback */

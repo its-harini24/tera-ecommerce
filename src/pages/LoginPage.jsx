@@ -69,7 +69,7 @@ export default function LoginPage() {
       showToast('Signed in with Google successfully!', 'success');
       navigate(from, { replace: true });
     } catch (err) {
-      setFormError('Google sign-in could not be completed.');
+      setFormError(err?.message || 'Google sign-in could not be completed.');
       showToast('Google sign-in error', 'error');
     } finally {
       setGoogleLoading(false);

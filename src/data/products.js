@@ -827,7 +827,10 @@ export const products = [
     featured: false,
     bestseller: false,
   },
-];
+].map((product) => ({
+  model3d: `/models/product-${product.id}.glb`,
+  ...product,
+}));
 
 export const getFeaturedProducts = () => products.filter(p => p.featured);
 export const getBestsellers = () => products.filter(p => p.bestseller);
